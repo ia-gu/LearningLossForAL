@@ -42,6 +42,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--seed', type=int, default=9999)
 args = parser.parse_args()
 SEED = args.seed
+
 # Seed
 random_seed = SEED
 random.seed(random_seed)
@@ -85,12 +86,11 @@ def get_uncertainty(models, unlabeled_loader):
     uncertainty = torch.tensor([]).cuda()
 
     with torch.no_grad():
-        for (inputs, labels) in unlabeled_loader:
+        for (inputs, _) in unlabeled_loader:
             inputs = inputs.cuda()
-            # labels = labels.cuda()
 
             scores, features = models['backbone'](inputs)
-            pred_loss = models['module'](features) # pred_loss = criterion(scores, labels) # ground truth loss
+            pred_loss = models['module'](features) 
             pred_loss = pred_loss.view(pred_loss.size(0))
 
             uncertainty = torch.cat((uncertainty, pred_loss), 0)
