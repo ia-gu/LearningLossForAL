@@ -3,15 +3,15 @@
 
 ##
 # Learning Loss for Active Learning
-NUM_TRAIN = 50000 # N
+NUM_TRAIN = 50000
 NUM_VAL   = 50000 - NUM_TRAIN
-BATCH     = 20 # B
-SUBSET    = 10000 # M
-ADDENDUM  = 1000 # K
+BATCH     = 20
+SUBSET    = 10000
+ADDENDUM  = 1000
 NAME = 'base/'
 
-MARGIN = 1.0 # xi
-WEIGHT = 1.0 # lambda
+MARGIN = 1.0
+WEIGHT = 1.0
 
 TRIALS = 1
 CYCLES = 10

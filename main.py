@@ -59,8 +59,7 @@ os.makedirs(log_path, exist_ok=True)
 os.makedirs(log_path+'hist/', exist_ok=True)
 logging.basicConfig(level=logging.ERROR, filename=log_path+'result.txt', format='%(message)s')
 
-classes = ('plane', 'car', 'bird', 'cat', 'deer',
-           'dog', 'frog', 'horse', 'ship', 'truck')
+classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
 
 
 # Data
@@ -68,12 +67,14 @@ train_transform = T.Compose([
     T.RandomHorizontalFlip(),
     T.RandomCrop(size=32, padding=4),
     T.ToTensor(),
-    T.Normalize([0.4914, 0.4822, 0.4465], [0.2023, 0.1994, 0.2010]) # T.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)) # CIFAR-100
+    T.Normalize([0.4914, 0.4822, 0.4465], [0.2023, 0.1994, 0.2010])
+    # T.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)) # CIFAR-100
 ])
 
 test_transform = T.Compose([
     T.ToTensor(),
-    T.Normalize([0.4914, 0.4822, 0.4465], [0.2023, 0.1994, 0.2010]) # T.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)) # CIFAR-100
+    T.Normalize([0.4914, 0.4822, 0.4465], [0.2023, 0.1994, 0.2010])
+    # T.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)) # CIFAR-100
 ])
 
 cifar10_train = CIFAR10('../cifar10', train=True, download=True, transform=train_transform)
@@ -89,12 +90,11 @@ def get_uncertainty(models, unlabeled_loader):
         for (inputs, _) in unlabeled_loader:
             inputs = inputs.cuda()
 
-            scores, features = models['backbone'](inputs)
-            pred_loss = models['module'](features) 
+            _, features = models['backbone'](inputs)
+            pred_loss = models['module'](features)
             pred_loss = pred_loss.view(pred_loss.size(0))
 
             uncertainty = torch.cat((uncertainty, pred_loss), 0)
-    
     return uncertainty.cpu()
 
 

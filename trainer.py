@@ -44,7 +44,7 @@ class Trainer:
             optimizers['backbone'].zero_grad()
             optimizers['module'].zero_grad()
 
-            # ResNet18は出力scoresと中間層の特徴量リストfeaturesを返す
+
             scores, features = models['backbone'](inputs)
             target_loss = criterion(scores, labels)
             _, preds = torch.max(scores.data, 1)
